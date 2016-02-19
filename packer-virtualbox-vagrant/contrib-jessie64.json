@@ -1,8 +1,8 @@
 {
-  "description": "Contrib Debian Jessie base box, build using contrib sources",
+  "description": "Debian Jessie 64 bits, with Docker and Samba",
   "variables": {
-      "box_version": "8.3.0",
-      "box_changelog": "* new stable point release",
+      "box_version": "8.3.0-0",
+      "box_changelog": "* first version",
       "atlas_token": "{{env `ATLAS_TOKEN`}}"
     },
   "builders": [
