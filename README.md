@@ -1,8 +1,4 @@
 Templates for Debian VM images
 ==============================
 
-If you had some templates here please follow the following directory
-structure: buildername-virtualizationbackend-extrainfo
-
-See https://wiki.debian.org/Teams/Cloud/VagrantBaseBoxes for Vagrant with Virtualbox
-
+This is a fork of https://anonscm.debian.org/cgit/cloud/debian-vm-templates.git focused on building a Vagrant Box with Docker and Samba preconfigured for development.
