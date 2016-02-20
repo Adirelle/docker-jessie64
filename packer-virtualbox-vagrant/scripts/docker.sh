@@ -11,4 +11,3 @@ apt-get -y install docker-engine
 systemctl enable docker-engine
 
 usermod -a -G docker vagrant
-
