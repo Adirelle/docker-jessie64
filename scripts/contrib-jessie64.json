@@ -1,8 +1,9 @@
 {
-  "description": "Vanilla Debian Jessie base box",
+  "description": "Debian Jessie 64 bits, with Docker and Samba",
   "variables": {
-      "box_version": "8.3.0",
-      "box_changelog": "* new stable point release",
+      "box_subversion": "{{env `ATLAS_BUILD_CONFIGURATION_VERSION`}}",
+      "box_version": "8.3.0-{{user `box_subversion`}}",
+      "box_changelog": "* first version",
       "atlas_token": "{{env `ATLAS_TOKEN`}}"
     },
   "builders": [
@@ -11,21 +12,21 @@
         "<esc><wait>",
         "install <wait>",
         "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/vanilla-debian-8-jessie-preseed.cfg <wait>",
-        "debian-installer=en_US <wait>",
+        "debian-installer=fr_FR <wait>",
         "auto <wait>",
-        "locale=en_US <wait>",
-        "kbd-chooser/method=us <wait>",
+        "locale=fr_FR <wait>",
+        "kbd-chooser/method=fr <wait>",
         "netcfg/get_hostname={{ .Name }} <wait>",
         "netcfg/get_domain=vagrantup.com <wait>",
         "fb=false <wait>",
         "debconf/frontend=noninteractive <wait>",
         "console-setup/ask_detect=false <wait>",
-        "console-keymaps-at/keymap=us <wait>",
-        "keyboard-configuration/xkb-keymap=us <wait>",
+        "console-keymaps-at/keymap=fr <wait>",
+        "keyboard-configuration/xkb-keymap=fr <wait>",
         "<enter><wait>"
       ],
-      "disk_size": "10140",
-      "guest_additions_mode": "disable",
+      "disk_size": "40960",
+      "guest_additions_mode": "upload",
       "guest_os_type": "Debian_64",
       "hard_drive_interface": "sata",
       "headless": true,
@@ -39,19 +40,32 @@
       "ssh_port": "22",
       "ssh_wait_timeout": "10000s",
       "type": "virtualbox-iso",
-      "vm_name": "debian-jessie",
+      "vm_name": "docker-jessie64",
       "vboxmanage": [
-        ["modifyvm", "{{.Name}}", "--memory", "512"],
-        ["modifyvm", "{{.Name}}", "--cpus", "1"]
+        ["modifyvm", "{{.Name}}", "--memory", "1024"],
+        ["modifyvm", "{{.Name}}", "--cpus", "3"]
       ]
     }
   ],
   "post-processors": [
-    {
-      "type": "vagrant",
-      "output": "jessie64.box",
-      "vagrantfile_template": "assets/rsync_for_sharedfolders_Vagrantfile"
-    }
+    [
+      {
+        "type": "vagrant",
+        "output": "docker-jessie64.box"
+      },
+      {
+        "type": "atlas",
+        "artifact": "Adirelle/docker-jessie64",
+        "artifact_type": "vagrant.box",
+        "token": "{{user `atlas_token`}}",
+        "metadata": {
+          "provider": "virtualbox",
+          "version": "{{user `box_version`}}",
+          "description": "{{user `box_changelog`}}"
+        },
+        "keep_input_artifact": true
+      }
+    ]
   ],
   "provisioners": [
     {
@@ -63,12 +77,21 @@
           "scripts": [
             "scripts/base.sh",
             "scripts/vagrant.sh",
+            "scripts/virtualbox.sh",
+            "scripts/docker.sh",
+            "scripts/docker-compose.sh",
+            "scripts/samba.sh",
+            "scripts/fish.sh",
             "scripts/cleanup.sh",
             "scripts/minimize.sh"
           ]
         }
       }
     }
-  ]
+  ],
+  "push": {
+    "vcs": true,
+    "name": "Adirelle/docker-jessie64"
+  }
 }
 
