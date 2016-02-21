@@ -2,7 +2,7 @@
   "description": "Debian Jessie 64 bits, with Docker and Samba",
   "variables": {
       "box_subversion": "{{env `ATLAS_BUILD_CONFIGURATION_VERSION`}}",
-      "box_version": "8.3.0-{{user `box_subversion`}}",
+      "box_version": "8.3.{{user `box_subversion`}}",
       "box_changelog": "* first version",
       "atlas_token": "{{env `ATLAS_TOKEN`}}"
     },
