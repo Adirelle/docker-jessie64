@@ -30,4 +30,4 @@ rm -f VBoxGuestAdditions.iso
 service vboxadd start
 
 # cleanup virtualbox stuff
-apt-get --yes remove linux-headers-$(uname -r) build-essential dkms
+apt-get --yes remove --purge linux-headers-$(uname -r) build-essential dkms

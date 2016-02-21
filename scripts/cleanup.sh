@@ -1,5 +1,5 @@
 # Clean up
-apt-get --yes autoremove
+apt-get --yes autoremove --purge
 apt-get --yes clean
 
 # Removing leftover leases and persistent rules
